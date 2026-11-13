@@ -38,12 +38,12 @@
 }
 
 .floating-action-whatsapp {
-  background: #20b968;
+  background: var(--cyan);
   font-size: 1.8rem;
 }
 
 .floating-action-whatsapp:hover {
-  background: #159b54;
+  background: var(--blue-dark);
 }
 
 .floating-action-top {

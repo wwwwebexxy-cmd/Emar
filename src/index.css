@@ -1,16 +1,16 @@
 @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap');
 
 :root {
-  --navy: #050607;
-  --navy-deep: #0b0c0e;
-  --blue-dark: #8e6d26;
-  --cyan: #c9a24b;
-  --cyan-bright: #e8c97d;
-  --ink: #14171b;
-  --muted: #5a6373;
-  --line: #ded8c8;
-  --surface: #f2eee3;
-  --white: #f4f2ec;
+  --navy: #0b1a46;
+  --navy-deep: #071333;
+  --blue-dark: #0878a8;
+  --cyan: #0a9ed8;
+  --cyan-bright: #5dc2ea;
+  --ink: #111d3a;
+  --muted: #5e6e84;
+  --line: #d7e2ed;
+  --surface: #f2f7fb;
+  --white: #ffffff;
   --ease: cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
@@ -81,7 +81,7 @@ ul {
 
 a:focus-visible,
 button:focus-visible {
-  outline: 3px solid rgba(201, 162, 75, 0.6);
+  outline: 3px solid rgba(10, 158, 216, 0.6);
   outline-offset: 3px;
 }
 

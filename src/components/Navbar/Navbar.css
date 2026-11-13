@@ -92,7 +92,7 @@
 }
 
 .nav-quote:hover {
-  background: var(--blue-dark);
+  background: var(--cyan-bright);
   transform: translateY(-1px);
 }
 
