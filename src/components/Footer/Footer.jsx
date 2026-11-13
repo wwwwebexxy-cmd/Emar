@@ -6,7 +6,10 @@ const Footer = () => (
     <div className="container footer-main">
       <div className="footer-brand">
         <a className="footer-logo" href="#top" aria-label="E M E R Technical Services home">
-          <img src="/assets/emer-logo-transparent.png" alt="E M E R Technical Services" />
+          <span className="footer-logo-art" aria-hidden="true">
+            <img className="footer-logo-words" src="/assets/emer-logo-transparent.png" alt="" />
+            <img className="footer-logo-symbol" src="/assets/emer-logo-transparent.png" alt="" />
+          </span>
         </a>
         <p>Specialists in Laundry &amp; Commercial Kitchen Engineering.</p>
       </div>
