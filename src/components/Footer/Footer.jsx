@@ -1,37 +1,37 @@
-import { FaEnvelope, FaInstagram, FaMapMarkerAlt, FaPhoneAlt, FaWhatsapp } from 'react-icons/fa';
+import { FaEnvelope, FaMapMarkerAlt, FaPhoneAlt, FaWhatsapp } from 'react-icons/fa';
 import './Footer.css';
 
 const Footer = () => (
   <footer className="site-footer">
     <div className="container footer-main">
       <div className="footer-brand">
-        <a className="footer-logo" href="#top" aria-label="EasyCars home">
-          <img src="/assets/easycars-logo-transparent.webp" alt="EasyCars Auto Trading" />
+        <a className="footer-logo" href="#top" aria-label="E M E R Technical Services home">
+          <img src="/assets/emer-logo-transparent.png" alt="E M E R Technical Services" />
         </a>
-        <p>You dream it. We find it. We bring it home.</p>
+        <p>Specialists in Laundry &amp; Commercial Kitchen Engineering.</p>
       </div>
 
-      <div className="footer-nav">
+      <nav className="footer-nav" aria-label="Footer navigation">
         <p className="footer-heading">Explore</p>
         <a href="#about">About us</a>
-        <a href="#process">Import process</a>
-        <a href="#enquiry">Enquiry form</a>
-        <a href="#contact">Contact us</a>
-      </div>
+        <a href="#services">Services</a>
+        <a href="#contact">Contact</a>
+      </nav>
 
       <div className="footer-contact">
-        <p className="footer-heading">Get in touch</p>
-        <a href="https://wa.me/971523048009" target="_blank" rel="noreferrer"><FaWhatsapp /> +971 52 304 8009</a>
-        <a href="tel:+971529359279"><FaPhoneAlt /> +971 52 935 9279</a>
-        <a href="tel:+971501020334"><FaPhoneAlt /> +971 50 102 0334</a>
-        <a href="mailto:easycarsimport@gmail.com"><FaEnvelope /> easycarsimport@gmail.com</a>
-        <a href="https://maps.app.goo.gl/8ZFAJySn9cEyVNMG7?g_st=iwb" target="_blank" rel="noreferrer"><FaMapMarkerAlt /> Sharjah, UAE</a>
+        <p className="footer-heading">Contact</p>
+        <a href="tel:+971585878090"><FaPhoneAlt aria-hidden="true" /> +971 58 587 8090</a>
+        <a href="https://wa.me/971555303294" target="_blank" rel="noreferrer"><FaWhatsapp aria-hidden="true" /> +971 55 530 3294</a>
+        <a href="mailto:emertechnicalservice@outlook.com"><FaEnvelope aria-hidden="true" /> emertechnicalservice@outlook.com</a>
+        <a href="https://www.google.com/maps/search/?api=1&query=Bright%20Vision%20Business%20Center%2C%20Deira%2C%20Dubai" target="_blank" rel="noreferrer">
+          <FaMapMarkerAlt aria-hidden="true" /> Bright Vision Business Center, Deira, Dubai
+        </a>
       </div>
     </div>
 
     <div className="container footer-bottom">
-      <p>© {new Date().getFullYear()} EasyCars Auto Trading LLC. All rights reserved.</p>
-      <a href="https://www.instagram.com/syamraktrv" target="_blank" rel="noreferrer" aria-label="EasyCars on Instagram"><FaInstagram /> @syamraktrv</a>
+      <p>© {new Date().getFullYear()} E M E R Technical Services. All rights reserved.</p>
+      <a href="#top">Back to top ↑</a>
     </div>
   </footer>
 );

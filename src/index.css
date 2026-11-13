@@ -1,17 +1,16 @@
-@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap');
 
 :root {
-  --red: #ef1f2f;
-  --red-bright: #ff3644;
-  --red-dark: #a70e1b;
-  --black: #050505;
-  --ink: #0b0b0d;
-  --panel: #111114;
-  --panel-soft: #18181d;
-  --white: #ffffff;
-  --muted: #a7a7ad;
-  --line: rgba(255, 255, 255, 0.12);
-  --shadow-red: 0 18px 50px rgba(239, 31, 47, 0.23);
+  --navy: #050607;
+  --navy-deep: #0b0c0e;
+  --blue-dark: #8e6d26;
+  --cyan: #c9a24b;
+  --cyan-bright: #e8c97d;
+  --ink: #14171b;
+  --muted: #5a6373;
+  --line: #ded8c8;
+  --surface: #f2eee3;
+  --white: #f4f2ec;
   --ease: cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
@@ -23,13 +22,14 @@
 
 html {
   scroll-behavior: smooth;
-  background: var(--black);
+  scroll-padding-top: 84px;
+  background: var(--white);
 }
 
 body {
   margin: 0;
-  background: var(--black);
-  color: var(--white);
+  background: var(--white);
+  color: var(--ink);
   font-family: 'DM Sans', sans-serif;
   line-height: 1.6;
   overflow-x: hidden;
@@ -48,8 +48,8 @@ h1,
 h2,
 h3,
 h4 {
-  font-family: 'Space Grotesk', sans-serif;
-  line-height: 1.12;
+  font-family: 'Space Grotesk', 'DM Sans', sans-serif;
+  line-height: 1.14;
 }
 
 a {
@@ -79,12 +79,28 @@ ul {
   padding: 0;
 }
 
+a:focus-visible,
+button:focus-visible {
+  outline: 3px solid rgba(201, 162, 75, 0.6);
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
 .container {
   width: min(1180px, calc(100% - 48px));
   margin: 0 auto;
 }
 
 @media (max-width: 480px) {
+  html {
+    scroll-padding-top: 68px;
+  }
+
   .container {
     width: min(100% - 32px, 1180px);
   }

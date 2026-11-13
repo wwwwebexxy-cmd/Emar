@@ -1,24 +1,17 @@
 import { useEffect, useState } from 'react';
-import { FaBars, FaPhoneAlt, FaTimes, FaWhatsapp } from 'react-icons/fa';
+import { FaBars, FaTimes } from 'react-icons/fa';
 import './Navbar.css';
 
 const navItems = [
-  { label: 'About', href: '#about' },
-  { label: 'Process', href: '#process' },
-  { label: 'Enquire', href: '#enquiry' },
+  { label: 'Home', href: '#top' },
+  { label: 'About Us', href: '#about' },
+  { label: 'Services', href: '#services' },
   { label: 'Contact', href: '#contact' },
 ];
 
 const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
-
-  useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 24);
-    window.addEventListener('scroll', handleScroll);
-    handleScroll();
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  const closeMenu = () => setMenuOpen(false);
 
   useEffect(() => {
     document.body.style.overflow = menuOpen ? 'hidden' : '';
@@ -27,23 +20,11 @@ const Navbar = () => {
     };
   }, [menuOpen]);
 
-  const closeMenu = () => setMenuOpen(false);
-
   return (
-    <header className={`site-nav ${scrolled ? 'site-nav--scrolled' : ''}`}>
+    <header className="site-nav">
       <div className="nav-inner container">
-        <a className="brand" href="#top" onClick={closeMenu} aria-label="EasyCars home">
-          <video
-            className="brand-video"
-            autoPlay
-            loop
-            muted
-            playsInline
-            preload="metadata"
-            aria-hidden="true"
-          >
-            <source src="/assets/easycars-navbar-logo.webm" type="video/webm" />
-          </video>
+        <a className="brand" href="#top" onClick={closeMenu} aria-label="E M E R Technical Services home">
+          <img src="/assets/emer-logo-transparent.png" alt="E M E R Technical Services" />
         </a>
 
         <button
@@ -53,27 +34,16 @@ const Navbar = () => {
           aria-expanded={menuOpen}
           onClick={() => setMenuOpen((open) => !open)}
         >
-          {menuOpen ? <FaTimes /> : <FaBars />}
+          {menuOpen ? <FaTimes aria-hidden="true" /> : <FaBars aria-hidden="true" />}
         </button>
 
-        <div className={`nav-panel ${menuOpen ? 'nav-panel--open' : ''}`}>
+        <div className={menuOpen ? 'nav-panel nav-panel-open' : 'nav-panel'}>
           <nav aria-label="Main navigation">
             {navItems.map((item) => (
-              <a href={item.href} key={item.href} onClick={closeMenu}>
-                {item.label}
-              </a>
+              <a href={item.href} key={item.href} onClick={closeMenu}>{item.label}</a>
             ))}
           </nav>
-          <div className="nav-actions">
-            <a className="nav-phone" href="tel:+971529359279" onClick={closeMenu}>
-              <FaPhoneAlt />
-              <span>+971 52 935 9279</span>
-            </a>
-            <a className="nav-whatsapp" href="https://wa.me/971523048009" target="_blank" rel="noreferrer" onClick={closeMenu}>
-              <FaWhatsapp />
-              WhatsApp
-            </a>
-          </div>
+          <a className="nav-quote" href="#contact" onClick={closeMenu}>Get a Quote</a>
         </div>
       </div>
     </header>

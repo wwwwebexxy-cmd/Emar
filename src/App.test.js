@@ -1,8 +1,8 @@
 import { render, screen } from '@testing-library/react';
 import App from './App';
 
-test('renders the EasyCars landing page', () => {
+test('renders the E M E R Technical Services landing page', () => {
   render(<App />);
-  expect(screen.getByRole('heading', { level: 1, name: /Your dream car starts here/i })).toBeInTheDocument();
-  expect(screen.getByText('EasyCars Auto Trading LLC', { exact: true })).toBeInTheDocument();
+  expect(screen.getByRole('heading', { level: 1, name: /Specialists in Laundry & Commercial Kitchen Engineering/i })).toBeInTheDocument();
+  expect(screen.getByRole('link', { name: /E M E R Technical Services home/i })).toBeInTheDocument();
 });

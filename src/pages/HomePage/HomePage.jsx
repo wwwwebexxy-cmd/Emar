@@ -1,384 +1,466 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import {
   FaArrowRight,
-  FaCar,
   FaCheck,
+  FaCogs,
   FaEnvelope,
-  FaExternalLinkAlt,
-  FaFileAlt,
-  FaInstagram,
   FaMapMarkerAlt,
   FaPhoneAlt,
-  FaShip,
-  FaTools,
-  FaTruck,
   FaWhatsapp,
+  FaWrench,
+  FaTools,
 } from 'react-icons/fa';
 import useSeo from '../../hooks/useSeo';
-import {
-  DEFAULT_DESCRIPTION,
-  DEFAULT_OG_IMAGE,
-  DEFAULT_TITLE,
-  FAQ_ITEMS,
-  MAP_URL,
-  SITE_URL,
-} from '../../seo/siteSeo';
+import { DEFAULT_DESCRIPTION, DEFAULT_OG_IMAGE, DEFAULT_TITLE } from '../../seo/siteSeo';
 import './HomePage.css';
 
-const WHATSAPP_NUMBER = '971523048009';
-const WHATSAPP_URL = `https://wa.me/${WHATSAPP_NUMBER}`;
+const WHATSAPP_URL = 'https://wa.me/971555303294?text=Hello%20E%20M%20E%20R%20Technical%20Services%2C%20I%20would%20like%20to%20request%20a%20quote.';
+const MAP_URL = 'https://www.google.com/maps/search/?api=1&query=Bright%20Vision%20Business%20Center%2C%20Deira%2C%20Dubai';
+const MAP_EMBED_URL = 'https://www.google.com/maps?q=Bright%20Vision%20Business%20Center%2C%20Deira%2C%20Dubai&output=embed';
+
+const engineeringAreas = [
+  {
+    id: 'laundry-details',
+    number: '01',
+    title: 'Laundry Engineering',
+    description: 'Installation, servicing and repair for industrial laundry equipment and control systems.',
+    image: '/assets/emer-laundry-engineering.png',
+    alt: 'Industrial washer extractors in a modern laundry facility',
+    linkLabel: 'Explore laundry services',
+  },
+  {
+    id: 'kitchen-details',
+    number: '02',
+    title: 'Commercial Kitchen Engineering',
+    description: 'Practical engineering support for commercial kitchen equipment, from installation to upgrades.',
+    image: '/assets/emer-commercial-kitchen.png',
+    alt: 'Stainless steel commercial kitchen with professional cooking equipment',
+    linkLabel: 'Explore kitchen services',
+  },
+];
 
 const heroSlides = [
   {
-    id: 'auction',
-    image: '/assets/easycars-auction-generated.webp',
-    alt: 'Vehicle auction yard in the USA',
-    step: 'Auction yard',
-    title: 'Your dream car',
-    accent: 'starts here.',
-    description: 'Choose from thousands of vehicles being auctioned across the USA.',
+    laundry: '/assets/emer-laundry-engineering.png',
+    laundryAlt: 'Industrial washers in a commercial laundry facility',
+    kitchen: '/assets/emer-commercial-kitchen.png',
+    kitchenAlt: 'Professional equipment in a commercial kitchen',
+    caption: 'Laundry & commercial kitchen engineering',
   },
   {
-    id: 'shipping',
-    image: '/assets/easycars-shipping-generated.webp',
-    alt: 'Vehicle shipping from America to the UAE',
-    step: 'Shipping',
-    title: 'From America',
-    accent: 'to the UAE.',
-    description: 'We coordinate the journey across borders and oceans, end to end.',
-  },
-  {
-    id: 'repairs',
-    image: '/assets/easycars-repairs-generated.webp',
-    alt: 'Vehicle repairs and preparation before delivery',
-    step: 'Repairs',
-    title: 'Handled from',
-    accent: 'start to finish.',
-    description: 'Repairs, spare parts, customs and trucking - managed by one team.',
-  },
-  {
-    id: 'delivery',
-    image: '/assets/easycars-delivery-generated.webp',
-    alt: 'Imported vehicle delivered to a UAE customer',
-    step: 'Delivery',
-    title: 'Delivered to',
-    accent: 'your door.',
-    description: 'The car you wanted, brought home to you in the UAE.',
+    laundry: '/assets/emer-service-installation.jpg',
+    laundryAlt: 'Technicians installing an industrial laundry washer',
+    kitchen: '/assets/emer-service-maintenance.jpg',
+    kitchenAlt: 'Technician servicing commercial kitchen equipment',
+    caption: 'Installation & preventive maintenance',
   },
 ];
 
-const processSteps = [
-  { icon: <FaCar />, image: '/assets/easycars-process-we-handle-bid.webp', imageAlt: 'Vehicles ready to be selected for import', title: 'Choose your vehicle', text: 'Tell us the brand, model and vehicle you have in mind.' },
-  { icon: <FaFileAlt />, image: '/assets/easycars-process-budget.webp', imageAlt: 'EasyCars vehicle budget consultation', title: 'Set your budget', text: 'You decide the maximum amount you are comfortable bidding.' },
-  { icon: <FaCheck />, image: '/assets/easycars-process-choose-vehicle.webp', imageAlt: 'Vehicle auction listing and bidding platform', title: 'We handle the bid', text: 'We guide you through the auction and bidding procedures.' },
-  { icon: <FaTruck />, image: '/assets/easycars-process-transport.webp', imageAlt: 'Vehicle transportation from the USA', title: 'USA transportation', text: 'Your vehicle is collected and moved from the auction yard.' },
-  { icon: <FaShip />, image: '/assets/easycars-process-shipping.webp', imageAlt: 'Vehicle shipping and customs', title: 'Shipping and customs', text: 'We coordinate shipping and customs clearance into the UAE.' },
-  { icon: <FaTools />, image: '/assets/easycars-process-repairs-parts-branded.webp', imageAlt: 'Automotive technician repairing a vehicle', title: 'Repairs and parts', text: 'Repair it with us or deliver it to a garage of your choice.' },
-  { icon: <FaCar />, image: '/assets/easycars-process-delivery.webp', imageAlt: 'Vehicle delivered to a UAE home', title: 'Delivered to your door', text: 'Your imported vehicle arrives ready for the next drive.' },
+const supportStages = [
+  {
+    number: '01',
+    icon: <FaTools aria-hidden="true" />,
+    title: 'Installation & commissioning',
+    text: 'Set up industrial laundry and commercial kitchen equipment.',
+  },
+  {
+    number: '02',
+    icon: <FaCheck aria-hidden="true" />,
+    title: 'AMC & preventive maintenance',
+    text: 'Planned maintenance support for the equipment your operation relies on.',
+  },
+  {
+    number: '03',
+    icon: <FaWrench aria-hidden="true" />,
+    title: 'Breakdown repairs & upgrades',
+    text: 'Repairs, equipment upgrades and spare parts support.',
+  },
 ];
 
-const serviceDetails = [
-  'Bidding and auction procedures',
-  'Paperwork',
-  'USA transportation',
-  'Shipping',
-  'Customs clearance',
-  'UAE trucking',
-  'Repairs and spare parts',
+const serviceTypes = [
+  {
+    icon: <FaTools aria-hidden="true" />,
+    title: 'Installation & commissioning',
+    text: 'Equipment installation and commissioning support.',
+    image: '/assets/emer-service-installation.jpg',
+    alt: 'Technicians commissioning an industrial laundry washer extractor',
+  },
+  {
+    icon: <FaCheck aria-hidden="true" />,
+    title: 'AMC & preventive maintenance',
+    text: 'Planned maintenance to support dependable equipment operation.',
+    image: '/assets/emer-service-maintenance.jpg',
+    alt: 'Technician carrying out planned maintenance on a commercial dishwasher',
+  },
+  {
+    icon: <FaWrench aria-hidden="true" />,
+    title: 'Breakdown repairs',
+    text: 'Service and repair for laundry and commercial kitchen equipment.',
+    image: '/assets/emer-service-repair.jpg',
+    alt: 'Technician diagnosing the control system of an industrial laundry machine',
+  },
+  {
+    icon: <FaCogs aria-hidden="true" />,
+    title: 'Upgrades & spare parts',
+    text: 'Equipment upgrades, laundry parts and technical component repairs.',
+    image: '/assets/emer-service-upgrades.jpg',
+    alt: 'Technician fitting replacement components to commercial laundry equipment',
+  },
 ];
 
-const contactCards = [
-  {
-    icon: <FaWhatsapp />,
-    label: 'WhatsApp',
-    value: '+971 52 304 8009',
-    href: WHATSAPP_URL,
-    external: true,
-  },
-  {
-    icon: <FaPhoneAlt />,
-    label: 'Mobile',
-    value: '+971 52 935 9279',
-    href: 'tel:+971529359279',
-  },
-  {
-    icon: <FaMapMarkerAlt />,
-    label: 'Office location',
-    value: 'Sharjah, UAE',
-    href: MAP_URL,
-    external: true,
-  },
-  {
-    icon: <FaInstagram />,
-    label: 'Instagram',
-    value: '@syamraktrv',
-    href: 'https://www.instagram.com/syamraktrv',
-    external: true,
-  },
-  {
-    icon: <FaEnvelope />,
-    label: 'Email',
-    value: 'easycarsimport@gmail.com',
-    href: 'mailto:easycarsimport@gmail.com',
-  },
+const laundryEquipment = [
+  'Dry cleaning machines',
+  'Washer extractors',
+  'Dryers',
+  'Tunnel washers & dryers',
+  'Flatwork ironers',
+  'Bed sheet & towel folders',
+  'Pressing & marking machines',
+  'PCB, VFD & PLC repair',
+  'Padding replacement',
+  'Motor rewinding',
+  'Boilers & air compressors',
+  'Laundry consumables & consultancy',
 ];
 
 const HomePage = () => {
-  const [activeSlide, setActiveSlide] = useState(0);
-  const [enquirySent, setEnquirySent] = useState(false);
+  const pageRef = useRef(null);
+  const [activeHeroSlide, setActiveHeroSlide] = useState(0);
+  const [heroPaused, setHeroPaused] = useState(false);
 
   useSeo({
     title: DEFAULT_TITLE,
     description: DEFAULT_DESCRIPTION,
-    canonicalUrl: `${SITE_URL}/`,
     ogImage: DEFAULT_OG_IMAGE,
   });
 
   useEffect(() => {
-    const timer = window.setInterval(() => {
-      setActiveSlide((current) => (current + 1) % heroSlides.length);
-    }, 5600);
-    return () => window.clearInterval(timer);
+    const page = pageRef.current;
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    if (!page || reduceMotion || !('IntersectionObserver' in window)) return undefined;
+
+    const revealItems = page.querySelectorAll('.motion-reveal');
+    if (!revealItems.length) return undefined;
+
+    page.classList.add('motion-ready');
+    const observer = new IntersectionObserver((entries, currentObserver) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+          currentObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.14, rootMargin: '0px 0px -36px 0px' });
+
+    revealItems.forEach((item) => observer.observe(item));
+    return () => {
+      observer.disconnect();
+      page.classList.remove('motion-ready');
+    };
   }, []);
 
-  const handleEnquirySubmit = (event) => {
-    event.preventDefault();
-    const form = event.currentTarget;
-    const data = new FormData(form);
-    const message = [
-      'Hello EasyCars, I would like to enquire about a vehicle.',
-      `Car make and model: ${data.get('makeModel')}`,
-      `Vehicle budget: ${data.get('budget')}`,
-      `Name: ${data.get('name')}`,
-      `WhatsApp / contact number: ${data.get('contact')}`,
-    ].join('\n');
+  useEffect(() => {
+    if (heroPaused || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return undefined;
 
-    form.reset();
-    window.location.href = `${WHATSAPP_URL}?text=${encodeURIComponent(message)}`;
-    setEnquirySent(true);
-    window.setTimeout(() => setEnquirySent(false), 4500);
-  };
+    const slideTimer = window.setInterval(() => {
+      if (document.visibilityState === 'visible') {
+        setActiveHeroSlide((current) => (current + 1) % heroSlides.length);
+      }
+    }, 6500);
+
+    return () => window.clearInterval(slideTimer);
+  }, [heroPaused]);
 
   return (
-    <div className="easycars-page" id="top">
-      <section className="hero" aria-label="EasyCars import journey">
-        <div className="hero-slides">
-          {heroSlides.map((slide, index) => (
-            <article className={`hero-slide ${index === activeSlide ? 'hero-slide--active' : ''}`} key={slide.id} aria-hidden={index !== activeSlide}>
-              <img src={slide.image} alt={slide.alt} className="hero-slide-image" />
-              <div className="hero-slide-shade" />
-            </article>
-          ))}
-        </div>
-
-        <div className="hero-grid" />
-        <div className="hero-content container">
-          <p className="hero-kicker"><span className="hero-kicker-line" /> EasyCars Auto Trading LLC</p>
-          <p className="hero-step">{heroSlides[activeSlide].step}</p>
-          <h1>{heroSlides[activeSlide].title}<br /><em>{heroSlides[activeSlide].accent}</em></h1>
-          <p className="hero-description">{heroSlides[activeSlide].description}</p>
-          <div className="hero-actions">
-            <a className="button button--red" href="#enquiry">Start your enquiry <FaArrowRight /></a>
-            <a className="button button--ghost" href="#process">How it works</a>
+    <div className="emer-page" id="top" ref={pageRef}>
+      <section className="hero-section" aria-labelledby="hero-title">
+        <div className="hero-copy">
+          <div className="hero-copy-inner">
+            <p className="hero-eyebrow"><span /> E M E R Technical Services · Dubai</p>
+            <h1 id="hero-title">Specialists in Laundry &amp; Commercial Kitchen Engineering</h1>
+            <p className="hero-description">
+              Specialized engineering services for industrial laundry and commercial kitchen equipment,
+              including installation, maintenance, repairs, and upgrades.
+            </p>
+            <div className="hero-actions">
+              <a className="button button-primary" href="#services">
+                Explore our services <FaArrowRight aria-hidden="true" />
+              </a>
+              <a className="button button-outline" href={WHATSAPP_URL} target="_blank" rel="noreferrer">
+                <FaWhatsapp aria-hidden="true" /> WhatsApp support
+              </a>
+            </div>
+            <p className="hero-location"><FaMapMarkerAlt aria-hidden="true" /> Deira, Dubai, UAE</p>
           </div>
         </div>
 
-        <div className="hero-bottom container">
-          <p>AUCTION <span>/</span> IMPORT <span>/</span> REPAIR <span>/</span> DRIVE</p>
-          <div className="hero-dots" aria-label="Hero slides">
+        <div
+          className="hero-visual"
+          aria-label="Laundry and commercial kitchen equipment"
+          onMouseEnter={() => setHeroPaused(true)}
+          onMouseLeave={() => setHeroPaused(false)}
+          onFocusCapture={() => setHeroPaused(true)}
+          onBlurCapture={(event) => {
+            if (!event.currentTarget.contains(event.relatedTarget)) setHeroPaused(false);
+          }}
+        >
+          <div className="hero-photo hero-photo-laundry">
             {heroSlides.map((slide, index) => (
-              <button
-                type="button"
-                key={slide.id}
-                className={index === activeSlide ? 'is-active' : ''}
-                onClick={() => setActiveSlide(index)}
-                aria-label={`Show ${slide.step}`}
-                aria-pressed={index === activeSlide}
+              <img
+                className={`hero-slide-image${index === activeHeroSlide ? ' is-active' : ''}`}
+                src={slide.laundry}
+                alt={index === activeHeroSlide ? slide.laundryAlt : ''}
+                aria-hidden={index !== activeHeroSlide}
+                fetchPriority={index === activeHeroSlide ? 'high' : 'auto'}
+                key={slide.laundry}
               />
             ))}
           </div>
-        </div>
-      </section>
-
-      <section className="partner-strip" aria-label="Auction marketplace partners">
-        <div className="container partner-inner">
-          <p>Access to the world's leading auction platforms</p>
-          <div className="partner-logos">
-            <img src="/assets/partner-copart.webp" alt="Copart" />
-            <img src="/assets/partner-iaa.webp" alt="IAA" />
-            <img src="/assets/partner-manheim.webp" alt="Manheim" />
+          <div className="hero-photo hero-photo-kitchen">
+            {heroSlides.map((slide, index) => (
+              <img
+                className={`hero-slide-image${index === activeHeroSlide ? ' is-active' : ''}`}
+                src={slide.kitchen}
+                alt={index === activeHeroSlide ? slide.kitchenAlt : ''}
+                aria-hidden={index !== activeHeroSlide}
+                key={slide.kitchen}
+              />
+            ))}
           </div>
-        </div>
-      </section>
-
-      <section className="content-section about-section" id="about">
-        <div className="container about-grid">
-          <div className="section-intro">
-            <p className="eyebrow">About us</p>
-            <h2>Your dream car.<br /><span>Our mission.</span></h2>
-          </div>
-          <div className="about-copy">
-            <p className="lead-copy">At EasyCars Auto Trading LLC, we believe that owning your dream car should never feel impossible.</p>
-            <p>There are countless vehicles around the world that people dream about owning - cars that may be rare, unavailable, difficult to find, or simply too complicated to bring into the UAE.</p>
-            <p>We exist to change that. If the car exists, we believe there is a way to bring it to you. Our goal is simple: make your dream car achievable and make the entire process as easy as possible.</p>
-            <a className="text-link" href="#enquiry">Tell us what you want <FaArrowRight /></a>
-          </div>
-        </div>
-      </section>
-
-      <section className="content-section process-section" id="process">
-        <div className="container">
-          <div className="section-heading-row">
-            <div>
-              <p className="eyebrow">Import process</p>
-              <h2>From an auction yard<br /><span>to your home.</span></h2>
-            </div>
-            <p className="section-heading-copy">We manage the journey from start to finish, giving you one team for every step between the USA and the UAE.</p>
-          </div>
-
-          <div className="process-layout">
-            <div className="process-list">
-              {processSteps.map((step) => (
-                <div className="process-card" key={step.title}>
-                  <img className="process-card-image" src={step.image} alt={step.imageAlt} />
-                  <div className="process-card-body">
-                    <span className="process-icon">{step.icon}</span>
-                    <div>
-                      <h3>{step.title}</h3>
-                      <p>{step.text}</p>
-                    </div>
-                  </div>
-                </div>
+          <span className="hero-divider" aria-hidden="true" />
+          <div className="hero-image-caption">
+            <span className="hero-caption-copy">{heroSlides[activeHeroSlide].caption}</span>
+            <div className="hero-caption-controls" role="group" aria-label="Hero photos">
+              {heroSlides.map((slide, index) => (
+                <button
+                  className={`hero-slide-control${index === activeHeroSlide ? ' is-active' : ''}`}
+                  type="button"
+                  aria-label={`Show photo set ${index + 1}: ${slide.caption}`}
+                  aria-pressed={index === activeHeroSlide}
+                  onClick={() => setActiveHeroSlide(index)}
+                  key={slide.caption}
+                />
               ))}
-            </div>
-            <div className="process-summary">
-              <p className="summary-label">We take care of everything that follows</p>
-              <ul>
-                {serviceDetails.map((item) => <li key={item}><FaCheck /> {item}</li>)}
-              </ul>
-              <p className="summary-note">Whether you want to repair the vehicle at one of our own facilities or have it delivered directly to a garage of your choice, we make it happen.</p>
+              <span className="hero-caption-mark">E M E R</span>
             </div>
           </div>
         </div>
       </section>
 
-      <section className="statement-section mission-section" id="mission">
-        <div className="statement-image statement-image--repairs" style={{ backgroundImage: "url('/assets/easycars-company-mission-branded.webp')" }} role="img" aria-label="Automotive technicians repairing a vehicle" />
-        <div className="container statement-content">
-          <p className="eyebrow">Company mission</p>
-          <h2>Your dream matters<br /><span>to us.</span></h2>
-          <p>For us, this isn't just about moving cars from one country to another. It's about the moment you finally see the car you've always wanted sitting in your garage.</p>
-          <p>We understand that a dream car can mean years of saving, planning, researching and waiting. That's why we treat every vehicle as more than just another transaction. It is someone's dream, and we take that personally.</p>
-        </div>
-      </section>
-
-      <section className="content-section vision-section" id="vision">
-        <div className="container vision-grid">
-          <div className="vision-card vision-card--dark">
-            <p className="eyebrow">Company vision</p>
-            <h2>Make every<br /><span>dream car possible.</span></h2>
-            <p>Our vision is to make dream-car ownership accessible, straightforward and achievable. We remove the complexity from international vehicle sourcing and importing by handling the entire process under one roof.</p>
-          </div>
-          <div className="vision-card vision-card--red">
-            <p className="quote-mark">“</p>
-            <p className="vision-quote">We want our customers to stop saying: <strong>I wish I could own that car.</strong> And start saying: <strong>How do we get it here?</strong></p>
-          </div>
-        </div>
-      </section>
-
-      <section className="content-section faq-section" id="faq" aria-labelledby="faq-title">
-        <div className="container faq-grid">
-          <div className="faq-intro">
-            <p className="eyebrow">Frequently asked questions</p>
-            <h2 id="faq-title">Clear answers.<br /><span>One simple journey.</span></h2>
-            <p>Learn how EasyCars helps you move from a USA auction search to vehicle delivery in the UAE.</p>
-          </div>
-          <div className="faq-list">
-            {FAQ_ITEMS.map((item) => (
-              <details className="faq-item" key={item.question}>
-                <summary>{item.question}<span aria-hidden="true">+</span></summary>
-                <p>{item.answer}</p>
-              </details>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section className="statement-section promise-section" id="promise">
-        <div className="statement-image statement-image--delivery" style={{ backgroundImage: "url('/assets/easycars-delivery-generated.webp')" }} role="img" aria-label="Imported vehicle delivered to a UAE customer" />
-        <div className="container statement-content statement-content--right">
-          <p className="eyebrow">Company promise</p>
-          <h2>You dream it.<br /><span>We bring it home.</span></h2>
-          <p>You don't need to know how international auctions work. You don't need to arrange American trucking, figure out shipping, navigate customs, search for spare parts, or coordinate multiple garages.</p>
-          <p className="promise-line">All you need to do is tell us: <strong>This is the car I want.</strong></p>
-        </div>
-      </section>
-
-      <section className="content-section enquiry-section" id="enquiry">
-        <div className="container enquiry-grid">
-          <div className="enquiry-intro">
-            <p className="eyebrow">Enquiry form</p>
-            <h2>Tell us about<br /><span>your next car.</span></h2>
-            <p>Share the basics and we will start looking for the right vehicle. Your enquiry opens WhatsApp with the details ready to send to our team.</p>
-            <a className="direct-whatsapp" href={WHATSAPP_URL} target="_blank" rel="noreferrer"><FaWhatsapp /> Chat directly on WhatsApp</a>
-          </div>
-          <form className="enquiry-form" onSubmit={handleEnquirySubmit}>
-            <label>
-              <span>Car make and model</span>
-              <input type="text" name="makeModel" placeholder="e.g. 2022 Nissan GT-R" required />
-            </label>
-            <label>
-              <span>Vehicle budget</span>
-              <input type="text" name="budget" placeholder="e.g. AED 180,000" required />
-            </label>
-            <div className="form-row">
-              <label>
-                <span>Your name</span>
-                <input type="text" name="name" placeholder="Your name" required />
-              </label>
-              <label>
-                <span>WhatsApp / contact</span>
-                <input type="tel" name="contact" placeholder="+971 ..." required />
-              </label>
+      <section className="capability-strip" aria-label="Service capabilities">
+        <div className="container capability-viewport">
+          <div className="capability-track">
+            <div className="capability-group">
+              <span>Installation &amp; Commissioning</span>
+              <span>AMC &amp; Preventive Maintenance</span>
+              <span>Breakdown Repairs</span>
+              <span>Spare Parts &amp; Upgrades</span>
             </div>
-            <button className="button button--red form-submit" type="submit">
-              {enquirySent ? 'WhatsApp enquiry ready' : 'Send enquiry'} <FaArrowRight />
-            </button>
-          </form>
+            <div className="capability-group" aria-hidden="true">
+              <span>Installation &amp; Commissioning</span>
+              <span>AMC &amp; Preventive Maintenance</span>
+              <span>Breakdown Repairs</span>
+              <span>Spare Parts &amp; Upgrades</span>
+            </div>
+          </div>
         </div>
       </section>
 
-      <section className="content-section contact-section" id="contact">
+      <section className="focus-section" aria-label="Our engineering specialties">
+        <div className="container focus-grid">
+          {engineeringAreas.map((area) => (
+            <a
+              className="focus-card motion-reveal"
+              href={area.id === 'laundry-details' ? '#laundry-details' : '#kitchen-details'}
+              key={area.id}
+            >
+              <div className="focus-image">
+                <img src={area.image} alt={area.alt} loading="lazy" />
+                <span className="focus-number">{area.number}</span>
+              </div>
+              <div className="focus-card-content">
+                <div>
+                  <h2>{area.title}</h2>
+                  <p>{area.description}</p>
+                </div>
+                <span className="focus-arrow" aria-label={area.linkLabel}><FaArrowRight aria-hidden="true" /></span>
+              </div>
+            </a>
+          ))}
+        </div>
+      </section>
+
+      <section className="about-section section-pad" id="about">
+        <div className="container about-grid">
+          <div className="section-heading motion-reveal motion-reveal-left">
+            <p className="section-eyebrow">About E M E R</p>
+            <h2>Practical engineering support for essential equipment.</h2>
+          </div>
+          <div className="about-copy motion-reveal motion-reveal-right">
+            <p className="about-lead">
+              E M E R Technical Services provides specialized engineering support for industrial laundry and
+              commercial kitchen equipment in Dubai.
+            </p>
+            <p>
+              Our work covers installation and commissioning, AMC and preventive maintenance, breakdown repairs,
+              equipment upgrades, and spare-parts support.
+            </p>
+            <p>
+              We support the laundry systems and kitchen equipment that daily operations depend on. Whether you need
+              planned servicing, a technical repair, or an equipment upgrade, our service scope stays focused on the
+              equipment and requirement you bring to us.
+            </p>
+            <ul className="about-highlights" aria-label="E M E R service specialties">
+              <li><FaCheck aria-hidden="true" /> Industrial laundry</li>
+              <li><FaCheck aria-hidden="true" /> Commercial kitchens</li>
+              <li><FaCheck aria-hidden="true" /> Installation to upgrades</li>
+            </ul>
+            <a className="text-link" href="#contact">Speak with our team <FaArrowRight aria-hidden="true" /></a>
+          </div>
+        </div>
+        <div className="container about-visual-grid">
+          <figure className="about-image-card motion-reveal motion-reveal-left">
+            <img
+              src="/assets/emer-about-laundry.jpg"
+              alt="Technician checking an industrial washer in a commercial laundry facility"
+              loading="lazy"
+            />
+            <figcaption>
+              <span>Industrial laundry</span>
+              <strong>Engineering for laundry systems</strong>
+            </figcaption>
+          </figure>
+          <figure className="about-image-card motion-reveal motion-reveal-right">
+            <img
+              src="/assets/emer-about-kitchen.jpg"
+              alt="Stainless commercial ranges, ovens, and extraction equipment in a professional kitchen"
+              loading="lazy"
+            />
+            <figcaption>
+              <span>Commercial kitchens</span>
+              <strong>Technical support for kitchen equipment</strong>
+            </figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <section className="support-journey section-pad" aria-labelledby="support-journey-title">
         <div className="container">
-          <div className="contact-heading">
-            <div>
-              <p className="eyebrow">Contact us</p>
-              <h2>Let's find<br /><span>your way home.</span></h2>
-            </div>
-            <a className="map-link" href={MAP_URL} target="_blank" rel="noreferrer">Open location in Google Maps <FaExternalLinkAlt /></a>
+          <div className="section-heading section-heading-centered motion-reveal motion-reveal-scale">
+            <p className="section-eyebrow">A connected service approach</p>
+            <h2 id="support-journey-title">Support through every stage of equipment service.</h2>
+            <p>Installation, planned maintenance, repairs and upgrades for laundry and commercial kitchen equipment.</p>
           </div>
-          <div className="contact-grid">
-            {contactCards.map((card) => (
-              <a
-                className="contact-card"
-                href={card.href}
-                key={card.label}
-                target={card.external ? '_blank' : undefined}
-                rel={card.external ? 'noreferrer' : undefined}
-              >
-                <span className="contact-icon">{card.icon}</span>
-                <span className="contact-label">{card.label}</span>
-                <strong>{card.value}</strong>
-              </a>
+          <div className="support-steps">
+            {supportStages.map((stage) => (
+              <article className="support-step motion-reveal" key={stage.number}>
+                <span className="support-step-number">{stage.number}</span>
+                <span className="support-step-icon">{stage.icon}</span>
+                <h3>{stage.title}</h3>
+                <p>{stage.text}</p>
+              </article>
             ))}
           </div>
         </div>
       </section>
 
-      <a className="floating-whatsapp" href={WHATSAPP_URL} target="_blank" rel="noreferrer" aria-label="Chat with EasyCars on WhatsApp">
-        <FaWhatsapp />
-        <span>Chat with us</span>
-      </a>
+      <section className="services-section section-pad" id="services">
+        <div className="container">
+          <div className="section-heading section-heading-centered motion-reveal motion-reveal-scale">
+            <p className="section-eyebrow">What we do</p>
+            <h2>Service for every stage of equipment life.</h2>
+            <p>Specialized engineering services for industrial laundry and commercial kitchen equipment.</p>
+          </div>
+          <div className="service-types-grid">
+            {serviceTypes.map((service) => (
+              <article className="service-type-card motion-reveal" key={service.title}>
+                <div className="service-type-image">
+                  <img src={service.image} alt={service.alt} loading="lazy" />
+                  <span className="service-type-icon" aria-hidden="true">{service.icon}</span>
+                </div>
+                <div className="service-type-copy">
+                  <h3>{service.title}</h3>
+                  <p>{service.text}</p>
+                </div>
+              </article>
+            ))}
+          </div>
+
+          <div className="equipment-grid">
+            <article className="equipment-panel equipment-panel-laundry motion-reveal motion-reveal-left" id="laundry-details">
+              <p className="section-eyebrow">Laundry engineering</p>
+              <h3>Equipment and systems we service</h3>
+              <p className="equipment-intro">Laundry machine service, component repairs, parts and technical consultancy.</p>
+              <ul className="equipment-list">
+                {laundryEquipment.map((item) => <li key={item}><FaCheck aria-hidden="true" /> {item}</li>)}
+              </ul>
+            </article>
+            <article className="equipment-panel equipment-panel-kitchen motion-reveal motion-reveal-right" id="kitchen-details">
+              <p className="section-eyebrow">Commercial kitchen engineering</p>
+              <h3>Support for commercial kitchen equipment</h3>
+              <p className="equipment-intro">
+                Installation, maintenance, breakdown repairs and equipment upgrades for commercial kitchens.
+              </p>
+              <ul className="kitchen-service-list">
+                <li><FaCheck aria-hidden="true" /> Installation &amp; commissioning</li>
+                <li><FaCheck aria-hidden="true" /> AMC &amp; preventive maintenance</li>
+                <li><FaCheck aria-hidden="true" /> Breakdown repairs</li>
+                <li><FaCheck aria-hidden="true" /> Equipment upgrades</li>
+              </ul>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section className="contact-section section-pad" id="contact">
+        <div className="container">
+          <div className="contact-banner motion-reveal">
+            <div>
+              <p className="section-eyebrow">Get in touch</p>
+              <h2>Need a service visit or a quote?</h2>
+              <p>Contact E M E R Technical Services in Deira, Dubai.</p>
+            </div>
+            <a className="button button-light" href={WHATSAPP_URL} target="_blank" rel="noreferrer">
+              <FaWhatsapp aria-hidden="true" /> Request a quote
+            </a>
+          </div>
+
+          <div className="contact-content-grid">
+            <div className="contact-map motion-reveal">
+              <iframe
+                src={MAP_EMBED_URL}
+                title="Map showing Bright Vision Business Center in Deira, Dubai"
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+                allowFullScreen
+              />
+            </div>
+            <div className="contact-details">
+              <a className="contact-detail motion-reveal" href="tel:+971585878090">
+                <span className="contact-icon"><FaPhoneAlt aria-hidden="true" /></span>
+                <span className="contact-label">Office</span>
+                <strong>+971 58 587 8090</strong>
+              </a>
+              <a className="contact-detail motion-reveal" href={WHATSAPP_URL} target="_blank" rel="noreferrer">
+                <span className="contact-icon"><FaWhatsapp aria-hidden="true" /></span>
+                <span className="contact-label">Mobile &amp; WhatsApp</span>
+                <strong>+971 55 530 3294</strong>
+              </a>
+              <a className="contact-detail motion-reveal" href={MAP_URL} target="_blank" rel="noreferrer">
+                <span className="contact-icon"><FaMapMarkerAlt aria-hidden="true" /></span>
+                <span className="contact-label">Office location</span>
+                <strong>Bright Vision Business Center, Deira, Dubai</strong>
+              </a>
+              <a className="contact-detail motion-reveal" href="mailto:emertechnicalservice@outlook.com">
+                <span className="contact-icon"><FaEnvelope aria-hidden="true" /></span>
+                <span className="contact-label">Email</span>
+                <strong>emertechnicalservice@outlook.com</strong>
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
     </div>
   );
 };
