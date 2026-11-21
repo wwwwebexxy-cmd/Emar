@@ -25,7 +25,7 @@ function FloatingActions() {
     <div className="floating-actions">
       <a
         className="floating-action floating-action-whatsapp"
-        href="https://wa.me/971555303294"
+        href="https://wa.me/971585878090"
         target="_blank"
         rel="noopener noreferrer"
         aria-label="Chat with E M E R Technical Services on WhatsApp"

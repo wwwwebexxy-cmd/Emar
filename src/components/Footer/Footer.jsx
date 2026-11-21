@@ -24,7 +24,7 @@ const Footer = () => (
       <div className="footer-contact">
         <p className="footer-heading">Contact</p>
         <a href="tel:+971585878090"><FaPhoneAlt aria-hidden="true" /> +971 58 587 8090</a>
-        <a href="https://wa.me/971555303294" target="_blank" rel="noreferrer"><FaWhatsapp aria-hidden="true" /> +971 55 530 3294</a>
+        <a href="https://wa.me/971585878090" target="_blank" rel="noreferrer"><FaWhatsapp aria-hidden="true" /> +971 58 587 8090</a>
         <a href="mailto:emertechnicalservice@outlook.com"><FaEnvelope aria-hidden="true" /> emertechnicalservice@outlook.com</a>
         <a href="https://www.google.com/maps/search/?api=1&query=Bright%20Vision%20Business%20Center%2C%20Deira%2C%20Dubai" target="_blank" rel="noreferrer">
           <FaMapMarkerAlt aria-hidden="true" /> Bright Vision Business Center, Deira, Dubai

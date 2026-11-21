@@ -14,7 +14,7 @@ import useSeo from '../../hooks/useSeo';
 import { DEFAULT_DESCRIPTION, DEFAULT_OG_IMAGE, DEFAULT_TITLE } from '../../seo/siteSeo';
 import './HomePage.css';
 
-const WHATSAPP_URL = 'https://wa.me/971555303294?text=Hello%20E%20M%20E%20R%20Technical%20Services%2C%20I%20would%20like%20to%20request%20a%20quote.';
+const WHATSAPP_URL = 'https://wa.me/971585878090?text=Hello%20E%20M%20E%20R%20Technical%20Services%2C%20I%20would%20like%20to%20request%20a%20quote.';
 const MAP_URL = 'https://www.google.com/maps/search/?api=1&query=Bright%20Vision%20Business%20Center%2C%20Deira%2C%20Dubai';
 const MAP_EMBED_URL = 'https://www.google.com/maps?q=Bright%20Vision%20Business%20Center%2C%20Deira%2C%20Dubai&output=embed';
 
@@ -445,7 +445,7 @@ const HomePage = () => {
               <a className="contact-detail motion-reveal" href={WHATSAPP_URL} target="_blank" rel="noreferrer">
                 <span className="contact-icon"><FaWhatsapp aria-hidden="true" /></span>
                 <span className="contact-label">Mobile &amp; WhatsApp</span>
-                <strong>+971 55 530 3294</strong>
+                <strong>+971 58 587 8090</strong>
               </a>
               <a className="contact-detail motion-reveal" href={MAP_URL} target="_blank" rel="noreferrer">
                 <span className="contact-icon"><FaMapMarkerAlt aria-hidden="true" /></span>
